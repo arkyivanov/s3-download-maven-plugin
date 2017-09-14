@@ -157,7 +157,9 @@ public class S3DownloadMojo extends AbstractMojo {
      * @throws IOException
      */
     private void downloadSingleFile(AmazonS3 s3, File destination, String key) throws IOException {
-        File newDestination = destination.toPath().resolve(key).toFile();
+// Arky: !!!!!
+//        File newDestination = destination.toPath().resolve(key).toFile();
+        File newDestination = destination;
 
         if (isDirectory(key)) {
             newDestination.mkdirs();
