@@ -7,6 +7,8 @@ import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.internal.StaticCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+
 import com.amazonaws.services.s3.model.*;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -24,13 +26,13 @@ public class S3DownloadMojo extends AbstractMojo {
     /**
      * Access key for S3.
      */
-    @Parameter(property = "s3-download.accessKey", required = true)
+    @Parameter(property = "s3-download.accessKey", required = false)
     private String accessKey;
 
     /**
      * Secret key for S3.
      */
-    @Parameter(property = "s3-download.secretKey", required = true)
+    @Parameter(property = "s3-download.secretKey", required = false)
     private String secretKey;
 
     /**
@@ -59,19 +61,21 @@ public class S3DownloadMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
-        getLog().info("--- s3-download-maven-plugin");
+        getLog().info("--- s3-download-maven-plugin-for-IAM");
         getLog().info(String.format("Bucket: %s, source: %s, destination: %s\n", bucketName, source, destination));
         
         if (source == null) {
             source = "";
         }
         
-        AmazonS3 s3 = getS3Client(accessKey, secretKey);
+//        AmazonS3 s3 = getS3Client(accessKey, secretKey);
+        AmazonS3 s3 = AmazonS3ClientBuilder.defaultClient();
+
         if (endpoint != null) {
             s3.setEndpoint(endpoint);
         }
 
-        if (!s3.doesBucketExist(bucketName)) {
+        if (!s3.doesBucketExistV2(bucketName)) {
             throw new MojoExecutionException("Bucket doesn't exist: " + bucketName);
         }
 
