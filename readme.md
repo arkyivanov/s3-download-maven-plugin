@@ -4,6 +4,10 @@ Plugin for maven to download a file or the contents of a directory (recursively)
 
 Changes were made to be able copy one file from S3 to local file with same name as it is specified in parameter "destination"
 
+FIXES:
+1) 02/25/2021 : FIX: Now plugin uses IAM (instance) authentication and doesn't use accessKey and secretKey  
+
+
 
 ## Using in maven pom.xml :
 
@@ -48,8 +52,8 @@ Example: Download a bucket
 |bucketName|The name of the bucket|*yes*| |
 |source|The source amazon s3 file key. Empty to download the whole bucket.|*no*| |
 |destination|The destination file or destination folder. Directories *MUST* end with */*| *yes*| |
-|accessKey|S3 access key | *yes* | if unspecified, uses the Default Provider, falling back to env variables |
-|secretKey|S3 secret key | *yes* | if unspecified, uses the Default Provider, falling back to env variables |
+|accessKey|S3 access key | *no* | if unspecified, uses the Default Provider, falling back to env variables |
+|secretKey|S3 secret key | *no* | if unspecified, uses the Default Provider, falling back to env variables |
 |endpoint|Use a different s3 endpoint| *no* | s3.amazonaws.com |
 
 
